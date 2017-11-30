@@ -11,7 +11,8 @@ AAnn = pd.read_csv('Austin_Annual_Crime_Dataset_2015.csv')
 AUF2015= pd.read_csv("Austin_UF_R2R_2015.csv")
 
 #Renaming columns
-AUF2015.rename(columns={' Primary Key': 'Key', ' Effect on Officer': ' OfficerEffects', 'Nature of Contact':'NatureOfContact', 'Officer Yrs of Service': 'OfficerYrsServ'}, inplace=True)
+AUF2015.rename(columns={' Primary Key': 'Key', ' Effect on Officer': ' OfficerEffects',
+'Nature of Contact':'NatureOfContact', 'Officer Yrs of Service': 'OfficerYrsServ'}, inplace=True)
 AAnn.rename(columns={'HighestNIBRS/UCROffenseDescription':'NIBRS', 'Council District': 'Council_District'}, inplace=True)
 
 #Removing spaces in column names
@@ -30,7 +31,8 @@ stack.rename(columns={'X-Coordinate':'XCoord', 'Y-Coordinate':'YCoord'}, inplace
 #Boolean for identifying UF incidents
 stack['UF'] = stack['AreaCommand'].notnull() | (stack['Key'].notnull() & stack['GOPrimaryKey'].notnull())
 
-#Putting info that was present in both datasets into same columns (keys, council districts, and geo coordinates)
+#Putting info that was present in both datasets into same columns (keys,
+#council districts, and geo coordinates)
 stack['Key'].fillna(stack['GOPrimaryKey'], inplace=True)
 stack.drop(['GOPrimaryKey'], axis = 1, inplace = True)
 
@@ -47,11 +49,13 @@ stack.drop(['GOYCoordinate'], axis = 1, inplace = True)
 stack = stack.reindex_axis(['Key','CouncilDistrict','UF','XCoord','YCoord','RIN',
                            'DateOccurred','TimeOccurred','ClearanceDate', 'GOReportDate',
                            'R2RLevel','NIBRS','AreaCommand',  'Location', 'GOCensusTract',
-                           'GODistrict','GOLocation','GOLocationZip','OfficerEffects','OfficerCommissionDate',
-                           'OfficerYrsServ', 'OfficerOrganizationDesc', 'ReasonDesc','SubjectConductDesc', 'SubjectEffects',
-                           'SubjectEthnicity', 'SubjectRace', 'SubjectResistance', 'SubjectSex', 'NatureOfContact',
-                           'GOHighestOffenseDesc', 'NumberShots', 'WeaponUsed1', 'WeaponUsed2', 'WeaponUsed3', 'WeaponUsed4',
-                           'WeaponUsed5', 'ClearanceStatus','MasterSubjectID'], axis=1)
+                           'GODistrict','GOLocation','GOLocationZip','OfficerEffects',
+                           'OfficerCommissionDate','OfficerYrsServ', 'OfficerOrganizationDesc',
+                           'ReasonDesc','SubjectConductDesc', 'SubjectEffects',
+                           'SubjectEthnicity', 'SubjectRace', 'SubjectResistance',
+                           'SubjectSex', 'NatureOfContact', 'GOHighestOffenseDesc',
+                           'NumberShots', 'WeaponUsed1', 'WeaponUsed2', 'WeaponUsed3',
+                           'WeaponUsed4','WeaponUsed5', 'ClearanceStatus','MasterSubjectID'], axis=1)
 
 
 #Sorting by council district
@@ -60,5 +64,27 @@ stack.sort_values(('CouncilDistrict'), inplace = True)
 #Resetting index to Key
 stack.set_index(['Key'], drop = False, inplace = True)
 
-#Saving to csv
-stack.to_csv('stack.csv')
+#Adding SES data for Council District to dataset
+SES = pd.read_csv("Districts10_Socioeconomics.csv")
+SES.set_index('Composite Socioeconomic Data for City Council Districts', inplace = True)
+SES = SES.iloc[:, 2:12]
+SES.dropna(thresh = 10, inplace = True)
+ColNames = SES.iloc[0]
+listnames = ColNames.str.extract('(\d+)').astype(int)
+SES.columns = listnames
+SES[listnames] = SES[listnames].replace({'\$': '', '%': '', ',':''}, regex=True)
+SES
+
+SES = SES.iloc[1:, :]
+SES.swapaxes(1, 0)
+stackfinal = pd.merge(SES.swapaxes(1, 0), stack, left_index = True, right_on = 'CouncilDistrict', how = 'outer')
+stackfinal.columns=stackfinal.columns.str.replace('\s+','')
+stackfinal.rename(columns={'IndivualsBelowPoverty':'NumBelowPoverty',
+                          'AdultsAge25Plus': 'Age25Plus', 'NumberwithatleastaBachelorsDegree': 'NumWithBachelors',
+                          'DriveAlone%': 'PercDriveAlone', 'TakeTransit%': 'PercTakeTrans',
+                          'ActiveJourney(Walk,orBike,orOther)%':'ActiveJourney',
+                          'LaborForceParticipationRate': 'LabForcePartRate',
+                          'PercentwithoutHealthInsurance': 'PercSansHealthIns'}, inplace = True)
+
+#Saving to .csv
+stackfinal.to_csv('stackfinal.csv')
