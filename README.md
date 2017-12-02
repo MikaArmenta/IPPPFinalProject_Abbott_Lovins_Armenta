@@ -3,6 +3,7 @@
 ### Intro to Programming for Public Policy, Final Project
 #### Authors: Sam Abbott, Joey Lovins, Mika Armenta
 
+*To view and run code, see Final > Austin > FINAL_NOTEBOOK.ipynb*
 
 #### Data Sources:
 
