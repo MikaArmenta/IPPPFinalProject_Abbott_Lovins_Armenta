@@ -1,17 +1,14 @@
-<p align = "center">
-
 # IPPP_Abbott_Lovins_Armenta
 
 ### Intro to Programming for Public Policy, Final Project
-### Authors: Sam Abbott, Joey Lovins, Mika Armenta
+#### Authors: Sam Abbott, Joey Lovins, Mika Armenta
 
-</p>
 
-### Data Sources:
+#### Data Sources:
 
 Our data sets can be found in the “Austin_Annual_Crime_Dataset_2015.csv” [1], “Austin_UF_R2R_2015.csv” [2], and “Districts10_Socioeconomics.csv” [3] files contained in our repository.
 
-### Summary:
+#### Summary:
 
 We set out to evaluate whether or not police use of force could be predicted probabilistically by key demographic variables and other census data. For instance, what is the relationship between socioeconomic status—i.e. poverty rates, workforce participation rate, population density, and unemployment rates—by council district, with police use of force? Ultimately, we hoped to develop a model that could explain how variation in those key demographic variables could predict, probabilistically, a use of force incident.
 
@@ -26,13 +23,13 @@ We then created a final model which can be customized by type of crime, and regr
 
 Following this, we provide spatial visualizations of use of force and crime levels across districts in the city of Austin.  Most obviously, these maps show a clear geographic division in crime levels between the west and east halves.
 
-### Data Reporting Issue:
+#### Data Reporting Issue:
 
 Our analysis was hampered by some inconsistencies in the reporting and recording of use of force and annual crime data. For instance, of more than 40,000 criminal incidents and greater than 1,600 use of force incidents, only 192 cases were in common.  This severely restricted the sample size in our probit model, and thus the type and sort of variation in each independent variable. With more shared data between the two data sets, we would have more precise coefficient estimates and a better sense for the strength and magnitude of the relationship between use of force and key demographic data.
 
 This difficulty is consistent with challenges in using police reported data elsewhere across the United States.  In a recent paper, “An Empirical Analysis of Racial Differences in Police Use of Force,” Dr. Roland G. Fryer (Faculty Director of EdLabs at Harvard) made similar claims about the startling absence of robust data on use of force incidents and other adverse police interactions. As he explains, “a primary obstacle to the study of police use of force has been the lack of readily available data. Data on lower level uses of force, which happen more frequently than officer-involved shootings, are virtually non-existent. This is due, in part, to the fact that most police precincts don’t explicitly collect data on use of force, and in part, to the fact that even when the data is hidden in plain view within police narrative accounts of interactions with civilians, it is exceedingly difficult to extract. Moreover, the task of compiling rich data on officer-involved shootings is burdensome. Until recently, data on officer-involved shootings were extremely rare and contained little information on the details surrounding an incident.” [5]  
 
-### References
+#### References
 
 1. https://data.austintexas.gov/Public-Safety/Annual-Crime-Dataset-2015/spbg-9v94
 
